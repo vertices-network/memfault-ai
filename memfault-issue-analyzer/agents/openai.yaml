@@ -1,0 +1,4 @@
+interface:
+  display_name: "Memfault Issue Analyzer"
+  short_description: "Analyze Memfault firmware issues with AI"
+  default_prompt: "Use $memfault-issue-analyzer to inspect a Memfault firmware issue and draft a root-cause analysis."

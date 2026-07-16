@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memfault-issue-analyzer"
+version = "0.1.0"
+description = "CLI and Codex skill for AI-assisted Memfault firmware issue analysis"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "Memfault Issue Analyzer contributors" }
+]
+dependencies = [
+  "anthropic>=0.39.0",
+  "requests>=2.31.0",
+  "python-dotenv>=1.0.0",
+  "rich>=13.7.0",
+  "prompt-toolkit>=3.0.43",
+]
+
+[project.scripts]
+memfault-issue-analyzer = "main:main"
+
+[tool.setuptools]
+py-modules = [
+  "agent_memory",
+  "autonomous_agent",
+  "claude_analyzer",
+  "config",
+  "main",
+  "memfault_client",
+  "ui",
+]

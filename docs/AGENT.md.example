@@ -1,0 +1,181 @@
+# Agent Context Template for Firmware Analysis
+
+This template provides project-specific context for AI agents analyzing firmware issues. Copy it to `AGENT.md` at the root of your firmware repository and replace every placeholder with details from your project.
+
+Avoid putting secrets, customer data, private keys, or credentials in this file.
+
+## Project Overview
+
+- **Product or system**: [Short description of the product, device, or embedded system]
+- **Firmware role**: [Bootloader, application firmware, connectivity processor, sensor controller, etc.]
+- **Target hardware**: [MCU/SoC family, board name, important peripherals]
+- **Operating model**: [RTOS, bare metal, Linux userspace helper, multicore architecture, etc.]
+- **Primary languages**: [C, C++, Rust, assembly, Python tooling, etc.]
+- **Build system**: [CMake, Make, Bazel, west, vendor IDE, custom scripts, etc.]
+- **Supported configurations**: [Board variants, feature flags, build profiles, product SKUs]
+
+## Repository Map
+
+Describe the directories and files that matter during issue analysis.
+
+| Path | Purpose | Notes |
+| --- | --- | --- |
+| `[path/to/component]` | [Component responsibility] | [Key files, ownership, constraints] |
+| `[path/to/tests]` | [Test location] | [How to run or interpret tests] |
+| `[path/to/docs]` | [Documentation location] | [Architecture notes, protocol specs, hardware docs] |
+
+## Architecture Overview
+
+### Key Components
+
+1. **[Component Name]** (`[path/]`)
+   - Responsibility: [What this component owns]
+   - Key entry points: `[function_or_module_name]`
+   - Important dependencies: [Drivers, queues, protocols, storage, sensors, services]
+   - Failure impact: [What breaks when this component fails]
+
+2. **[Component Name]** (`[path/]`)
+   - Responsibility: [What this component owns]
+   - Key entry points: `[function_or_module_name]`
+   - Important dependencies: [Drivers, queues, protocols, storage, sensors, services]
+   - Failure impact: [What breaks when this component fails]
+
+3. **[Component Name]** (`[path/]`)
+   - Responsibility: [What this component owns]
+   - Key entry points: `[function_or_module_name]`
+   - Important dependencies: [Drivers, queues, protocols, storage, sensors, services]
+   - Failure impact: [What breaks when this component fails]
+
+## Runtime and Threading Model
+
+List tasks, threads, interrupt handlers, event loops, or work queues. Include priorities only if they matter for debugging.
+
+| Context | Priority or timing | Responsibilities | Blocking rules |
+| --- | --- | --- | --- |
+| `[task/thread/isr name]` | `[priority/period/interrupt]` | [Work performed] | [Can block? Can allocate? Can call drivers?] |
+| `[task/thread/isr name]` | `[priority/period/interrupt]` | [Work performed] | [Can block? Can allocate? Can call drivers?] |
+
+### Shared State and Critical Sections
+
+- **[Resource]**: Protected by [mutex/spinlock/atomic/critical section/queue ownership].
+- **[Resource]**: Accessed from [thread/ISR contexts]; constraints are [rules].
+- **[Resource]**: Uses [lock-free/ring buffer/DMA/shared memory] pattern; watch for [pitfalls].
+
+## Memory and Resource Constraints
+
+- **Stack limits**: [Per-task or global stack constraints]
+- **Heap allocation policy**: [Allowed, forbidden after init, allocator type, fragmentation concerns]
+- **Static buffers**: [Important fixed-size pools, queues, frame buffers]
+- **DMA/shared memory**: [Alignment, cache, memory-region, or lifetime constraints]
+- **Persistent storage**: [Flash, EEPROM, filesystem, wear limits, schema/versioning]
+
+## Error Handling Philosophy
+
+Describe how failures should be handled and what behavior is unacceptable.
+
+- **Assertions**: [Soft assert, hard assert, reset, log-only, production policy]
+- **Recoverable errors**: [Retry, degrade, reset subsystem, drop data, notify host]
+- **Fatal errors**: [Coredump, watchdog reset, safe mode, reboot reason]
+- **Telemetry**: [What gets reported to Memfault or another observability system]
+- **User or device impact**: [How severity should be judged]
+
+## Common Issue Patterns
+
+Use this section to teach agents how failures usually present in this codebase.
+
+### [Pattern Name]
+
+- **Typical symptom**: [Error text, assert location, trace shape, log pattern]
+- **Likely areas**: `[path/to/files]`
+- **Common root causes**: [Race, missing handler, timeout, power sequencing, invalid state]
+- **Good first checks**: [State variables, logs, counters, feature flags, recent changes]
+- **Preferred fixes**: [Guard, retry, state-machine change, queue sizing, protocol handling]
+- **Validation**: [Tests or manual verification]
+
+### [Pattern Name]
+
+- **Typical symptom**: [Error text, assert location, trace shape, log pattern]
+- **Likely areas**: `[path/to/files]`
+- **Common root causes**: [Race, missing handler, timeout, power sequencing, invalid state]
+- **Good first checks**: [State variables, logs, counters, feature flags, recent changes]
+- **Preferred fixes**: [Guard, retry, state-machine change, queue sizing, protocol handling]
+- **Validation**: [Tests or manual verification]
+
+## Interfaces and Protocols
+
+Document externally visible contracts that affect debugging.
+
+- **[Interface/protocol]**
+  - Transport: [UART, CAN, BLE, USB, TCP, shared memory, GPIO, etc.]
+  - Message format: [Where defined]
+  - Timing requirements: [Timeouts, heartbeat intervals, ordering]
+  - Compatibility rules: [Versioning, optional fields, backward compatibility]
+  - Failure handling: [Retries, disconnect behavior, safe state]
+
+## Build, Test, and Debug Commands
+
+Provide commands exactly as an agent should run them from the repository root.
+
+```bash
+# Configure or install dependencies
+[command]
+
+# Build default target
+[command]
+
+# Run unit tests
+[command]
+
+# Run integration or hardware tests
+[command]
+
+# Format, lint, or static analysis
+[command]
+```
+
+## Fix Verification Guidelines
+
+For each fix, prefer the smallest validation that proves the behavior and the broader validation that protects the release.
+
+1. **Unit tests**: [Expected unit test coverage]
+2. **Integration tests**: [Subsystem or host/device tests]
+3. **Hardware validation**: [Bench setup, required peripherals, expected signals]
+4. **Stress or soak tests**: [Duration, workload, pass/fail criteria]
+5. **Regression monitoring**: [Metrics, Memfault issue behavior, dashboards, logs]
+6. **Release criteria**: [Who signs off, target channels, staged rollout requirements]
+
+## Dependencies and Version Notes
+
+List only dependencies that commonly affect debugging or fixes.
+
+| Dependency | Version or source | Why it matters |
+| --- | --- | --- |
+| `[RTOS/HAL/SDK/library]` | `[version/source]` | [Relevant constraints, known issues, APIs] |
+| `[Toolchain]` | `[version/source]` | [Compiler flags, ABI, warnings, linker behavior] |
+| `[External service/protocol]` | `[version/source]` | [Compatibility or integration notes] |
+
+## Debugging Tips
+
+- Logs: [How to enable, where to find them, important tags]
+- Coredumps: [How to decode and where symbols come from]
+- Debugger: [Probe, server, target config, common commands]
+- Hardware tools: [Logic analyzer, bus sniffer, oscilloscope, power monitor]
+- Reproduction: [Known ways to reproduce common failures]
+- Recent changes: [Where to look for release notes, changelog, feature flags]
+
+## Coding Guidelines for Fixes
+
+- Keep changes minimal and localized unless the root cause is systemic.
+- Preserve public interfaces unless compatibility impact is explicitly accepted.
+- Avoid blocking, allocation, or logging in interrupt/time-critical contexts unless the project allows it.
+- Check return values from driver, protocol, allocation, and storage APIs.
+- Prefer deterministic cleanup and explicit state transitions.
+- Add tests or assertions that prevent the same failure from recurring.
+
+## Contact and Resources
+
+- Architecture docs: `[path or link]`
+- Hardware docs: `[path or link]`
+- Protocol specs: `[path or link]`
+- Release process: `[path or link]`
+- Owners or reviewers: `[team/channel/person]`

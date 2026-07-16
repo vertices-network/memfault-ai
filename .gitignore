@@ -1,0 +1,24 @@
+# Environment variables
+.env
+
+# OS metadata
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Analysis results
+analysis_results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
